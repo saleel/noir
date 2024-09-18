@@ -16,7 +16,7 @@ export class BarretenbergVerifier {
   constructor(private options: BackendOptions = { threads: 1 }) {}
 
   /** @ignore */
-  async instantiate(): Promise<void> {
+  async instantiate({ crsPath = '' } = {}): Promise<void> {
     if (!this.api) {
       if (typeof navigator !== 'undefined' && navigator.hardwareConcurrency) {
         this.options.threads = navigator.hardwareConcurrency;
@@ -32,7 +32,10 @@ export class BarretenbergVerifier {
 
       // This is the number of CRS points necessary to verify a Barretenberg proof.
       const NUM_CRS_POINTS_FOR_VERIFICATION: number = 0;
-      const [api, crs] = await Promise.all([Barretenberg.new(this.options), Crs.new(NUM_CRS_POINTS_FOR_VERIFICATION)]);
+      const [api, crs] = await Promise.all([
+        Barretenberg.new(this.options),
+        Crs.new(NUM_CRS_POINTS_FOR_VERIFICATION, crsPath),
+      ]);
 
       await api.commonInitSlabAllocator(NUM_CRS_POINTS_FOR_VERIFICATION);
       await api.srsInitSrs(
@@ -88,7 +91,7 @@ export class UltraHonkVerifier {
   constructor(private options: BackendOptions = { threads: 1 }) {}
 
   /** @ignore */
-  async instantiate(): Promise<void> {
+  async instantiate({ crsPath = '' } = {}): Promise<void> {
     if (!this.api) {
       if (typeof navigator !== 'undefined' && navigator.hardwareConcurrency) {
         this.options.threads = navigator.hardwareConcurrency;
@@ -104,7 +107,10 @@ export class UltraHonkVerifier {
 
       // This is the number of CRS points necessary to verify a Barretenberg proof.
       const NUM_CRS_POINTS_FOR_VERIFICATION: number = 0;
-      const [api, crs] = await Promise.all([Barretenberg.new(this.options), Crs.new(NUM_CRS_POINTS_FOR_VERIFICATION)]);
+      const [api, crs] = await Promise.all([
+        Barretenberg.new(this.options),
+        Crs.new(NUM_CRS_POINTS_FOR_VERIFICATION, crsPath),
+      ]);
 
       await api.commonInitSlabAllocator(NUM_CRS_POINTS_FOR_VERIFICATION);
       await api.srsInitSrs(
